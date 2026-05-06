@@ -1,72 +1,83 @@
 {
   "name": "caa",
   "version": "1.0.0",
-  "description": "A blank template to get started with Payload 3.0",
-  "license": "MIT",
+  "private": true,
   "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
-    "devsafe": "rm -rf .next && next dev",
-    "generate:importmap": "payload generate:importmap",
-    "generate:types": "payload generate:types",
-    "lint": "next lint",
-    "payload": "payload",
-    "start": "next start",
-    "test": "pnpm run test:int && pnpm run test:e2e",
-    "test:e2e": "playwright test --config=playwright.config.ts",
-    "test:int": "vitest run --config ./vitest.config.mts",
-    "cf:build": "opennextjs-cloudflare build",
-    "review": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "dev": "vite dev --port 3000",
+    "check": "pnpm format:check && pnpm lint:check && pnpm tsc && pnpm test",
+    "build": "vite build",
+    "typegen": "wrangler types",
+    "deploy": "pnpm build && wrangler deploy",
+    "deploy:dry-run": "pnpm build && wrangler deploy --dry-run",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "lint": "oxlint --fix .",
+    "lint:check": "oxlint .",
+    "prepare": "simple-git-hooks",
+    "preview": "vite preview --host 127.0.0.1 --port 3000 --strictPort",
+    "preview:e2e": "pnpm build && pnpm preview",
+    "tsc": "tsc --noEmit",
+    "test:e2e": "playwright test -grep @smoke",
+    "test:playwright": "playwright test",
+    "validate": "pnpm lint:check && pnpm tsc && pnpm test:e2e",
+    "wrangler": "wrangler"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.16.5",
-    "@payloadcms/db-sqlite": "3.77.0",
-    "@payloadcms/next": "3.77.0",
-    "@payloadcms/richtext-lexical": "3.77.0",
-    "@payloadcms/ui": "3.77.0",
-    "@tailwindcss/postcss": "^4.2.0",
-    "@tailwindcss/typography": "^0.5.19",
-    "dotenv": "16.4.7",
-    "libsql": "0.4.7",
-    "next": "15.4.11",
-    "payload": "3.77.0",
-    "postcss": "^8.5.6",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
-    "sharp": "0.34.2",
-    "tailwindcss": "^4.2.0"
+    "@cloudflare/vite-plugin": "^1.36.0",
+    "@tailwindcss/vite": "^4.2.4",
+    "@tanstack/react-devtools": "^0.10.2",
+    "@tanstack/react-router": "^1.169.2",
+    "@tanstack/react-router-devtools": "^1.166.13",
+    "@tanstack/react-router-ssr-query": "^1.166.12",
+    "@tanstack/react-start": "^1.167.64",
+    "@tanstack/router-plugin": "^1.167.34",
+    "@tohuhono/ui": "^0.14.7",
+    "@tohuhono/utils": "^0.14.2",
+    "@unpic/react": "^1.0.2",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.3",
-    "@playwright/test": "1.58.2",
-    "@testing-library/react": "16.3.0",
-    "@types/node": "22.19.9",
-    "@types/react": "19.2.9",
-    "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "4.5.2",
-    "eslint": "^9.16.0",
-    "eslint-config-next": "15.4.11",
-    "jsdom": "28.0.0",
-    "prettier": "^3.4.2",
-    "tsx": "4.21.0",
-    "typescript": "5.7.3",
-    "vite-tsconfig-paths": "6.0.5",
-    "vitest": "4.0.18",
-    "wrangler": "^4.67.0"
+    "@cloudflare/vite-plugin": "^1.36.0",
+    "@playwright/test": "^1.59.1",
+    "@tailwindcss/typography": "^0.5.19",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^22.19.17",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "jsdom": "^28.1.0",
+    "lint-staged": "^16.4.0",
+    "oxfmt": "^0.45.0",
+    "oxlint": "^1.63.0",
+    "sharp": "^0.34.5",
+    "simple-git-hooks": "^2.13.1",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.10",
+    "wrangler": "^4.88.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*": "oxfmt --write --no-error-on-unmatched-pattern"
   },
   "engines": {
-    "node": "^18.20.2 || >=20.9.0",
-    "pnpm": "^9 || ^10"
+    "node": ">=24",
+    "pnpm": "^10"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "sharp",
       "esbuild",
-      "unrs-resolver"
+      "lightningcss",
+      "sharp",
+      "simple-git-hooks",
+      "workerd"
     ]
   }
 }
