@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite dev --port 3000",
-    "check": "pnpm format:check && pnpm lint:check && pnpm tsc && pnpm test",
+    "check": "pnpm format:check && pnpm lint:check && pnpm tsc && pnpm test:e2e",
     "build": "vite build",
     "typegen": "wrangler types",
     "deploy": "pnpm build && wrangler deploy",
