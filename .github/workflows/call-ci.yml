@@ -6,9 +6,8 @@ on:
       environment:
         required: true
         type: string
-      production_base_url:
-        required: false
-        default: ""
+      stage:
+        required: true
         type: string
     secrets:
       CLOUDFLARE_ACCOUNT_ID:
@@ -86,7 +85,7 @@ jobs:
     uses: ./.github/workflows/call-deploy.yml
     with:
       environment: ${{ inputs.environment }}
-      production_base_url: ${{ inputs.production_base_url }}
+      stage: ${{ inputs.stage }}
     secrets:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

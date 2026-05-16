@@ -39,6 +39,7 @@ __unconfig*
 # Deployment tooling
 .vercel
 .wrangler
+.sst
 .dev*
 
 # TypeScript and generated metadata

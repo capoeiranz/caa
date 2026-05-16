@@ -23,13 +23,12 @@ const config = defineConfig({
   },
   plugins: [
     devtools(),
-    cloudflare({ viteEnvironment: { name: "ssr" } }),
-    tailwindcss(),
-    tanstackStart({
-      prerender: {
-        enabled: true,
-      },
+    cloudflare({
+      viteEnvironment: { name: "ssr" },
+      configPath: process.env.SST_WRANGLER_PATH,
     }),
+    tailwindcss(),
+    tanstackStart(),
     viteReact(),
   ],
 })

@@ -10,22 +10,12 @@
 - Keep `@tanstack/devtools-vite` first in the Vite plugin array.
 - Keep the Cloudflare plugin ahead of TanStack Start so workerd owns the SSR runtime.
 - Keep `tanstackStart()` before `viteReact()` in the Vite plugin array.
-- This Worker uses one isolated preview Worker per PR, named `planningpoker-pr-<number>`, so pull
-  requests do not clobber each other.
-- Production deploys attach the custom domains declared in `wrangler.jsonc`.
-- `CLOUDFLARE_PRODUCTION_BASE_URL` is still used by CI as the primary smoke-test URL; store it as
-  one of the production hostnames, as a bare hostname rather than a full URL.
-- Preview deploys use each PR Worker's built-in `workers.dev` hostname, such as
-  `planningpoker-pr-123.<account-subdomain>.workers.dev`, to avoid per-hostname certificate
-  provisioning delays.
-- Cloudflare Workers Custom Domains do not support wildcard hostnames, so per-PR custom preview
-  hostnames add certificate issuance latency with little benefit here.
-- Preview smoke tests still wait for the deployed HTTPS endpoint to become reachable before running
-  Playwright, but the `workers.dev` target should be available much faster than a newly attached
-  custom hostname.
-- Preview smoke tests run against the deployed PR URL emitted by the deploy workflow.
-- Closed pull requests delete their preview Worker via `.github/workflows/preview-cleanup.yml`.
-- The production GitHub workflow performs a direct deploy to the stable production Worker, then can
-  smoke the stable production URL.
+- Deployments are now managed by SST (`sst.config.ts`) using `sst.cloudflare.TanStackStart`.
+- Preview deploys run from pull requests and deploy to stage `pr-<number>`.
+- Production deploys run from pushes to `main` and deploy to stage `production`.
+- Production custom domains are managed in `sst.config.ts` as code.
+- The deploy workflow reads `.sst/outputs.json` and uses the `url` output for smoke tests.
+- Closed pull requests remove their stage with `.github/workflows/preview-cleanup.yml`.
+- Preview deploys use Cloudflare worker URLs by default (no custom preview domain required).
 - Protected smoke tests use Cloudflare Access service-token headers via
   `CLOUDFLARE_ACCESS_CLIENT_ID` and `CLOUDFLARE_ACCESS_CLIENT_SECRET` GitHub secrets.

@@ -51,20 +51,22 @@ pnpm check
 
 ## Deploy to Cloudflare Workers
 
-This project uses the Cloudflare Vite plugin (configured in `vite.config.ts`) and `wrangler.jsonc`:
+This project uses SST to deploy TanStack Start to Cloudflare Workers.
 
-1. Install Wrangler: `npm install -g wrangler`
-2. Authenticate: `wrangler login`
-3. Deploy: `npx wrangler deploy`
+1. Install dependencies: `pnpm install`
+2. Authenticate with Cloudflare credentials (`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`)
+3. Deploy production: `pnpm deploy`
+4. Diff production changes without deploying: `pnpm deploy:dry-run`
 
-Production custom domains are declared in `wrangler.jsonc`. This app currently deploys to
-`capoeira.net.nz`, `www.capoeira.net.nz`, `capoeira.org.nz`, and `www.capoeira.org.nz`.
+GitHub Actions deployment flow:
 
-For production env vars, run `wrangler secret put MY_VAR` for each secret listed in `.env.example`.
-Public (non-secret) vars go in `wrangler.jsonc` under `vars`.
+1. Pull requests to `main` deploy a preview stage named `pr-<number>`
+2. Merges to `main` deploy the production stage `production`
+3. Closing/merging a PR removes its preview stage automatically
 
-KV, D1, R2, and Durable Object bindings are configured in `wrangler.jsonc` — see
-https://developers.cloudflare.com/workers/wrangler/configuration/.
+Production custom domains are defined directly in `sst.config.ts`.
+
+The deployed URL used by smoke tests is read from `.sst/outputs.json`.
 
 ## Shadcn
 
