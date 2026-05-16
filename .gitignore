@@ -1,36 +1,64 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
+# Dependencies and package manager artifacts
+/node_modules/
 /.pnp
 .pnp.js
 .yarn/install-state.gz
 
-# testing
-/coverage
+# IDE and editor settings
+/.idea/*
+!/.idea/runConfigurations
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
+# Environment and local-only files
+.env
+.env.*
+.env*.local
+*.local
+.local
 *.pem
 
-# debug
+# Logs and debug output
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
+# Build and framework output
+/build/
+/dist/
+/dist-ssr/
+/.next/
+/out/
+.nitro
+.output
+.open-next
+.tanstack
+.vinxi
+__unconfig*
 
-# vercel
+# Deployment tooling
 .vercel
+.wrangler
+.sst
+.dev*
 
-# typescript
+# TypeScript and generated metadata
 *.tsbuildinfo
 next-env.d.ts
+
+# Test artifacts and coverage
+/coverage/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/test/results/
+/test/playwright-report/
+
+# Project-specific temporary files
+/media/
+todos.json
+.tmp
+
+# OS files
+.DS_Store
