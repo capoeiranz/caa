@@ -67,7 +67,7 @@
     "wrangler": "^4.88.0"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint"
+    "pre-commit": "pnpm format"
   },
   "engines": {
     "node": ">=24",
