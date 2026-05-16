@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite dev --port 3000",
-    "check": "pnpm format:check && pnpm lint:check && pnpm tsc",
+    "check": "pnpm format:check && pnpm lint && pnpm tsc",
     "build": "vite build",
     "typegen": "wrangler types",
     "deploy": "pnpm build && wrangler deploy",
@@ -16,15 +16,15 @@
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
     "generate:ui": "shadcn add",
-    "lint": "oxlint --fix",
-    "lint:check": "oxlint",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
     "prepare": "simple-git-hooks",
     "preview": "vite preview --host 127.0.0.1 --port 3000 --strictPort",
     "preview:e2e": "pnpm build && pnpm preview",
     "tsc": "tsc --noEmit",
     "test:e2e": "playwright test",
     "test:playwright": "playwright test",
-    "validate": "pnpm lint:check && pnpm tsc && pnpm test:e2e",
+    "validate": "pnpm lint && pnpm tsc && pnpm test:e2e",
     "wrangler": "wrangler"
   },
   "dependencies": {
