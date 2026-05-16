@@ -7,6 +7,20 @@ import { defineConfig } from "vite"
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
+  build: {
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            {
+              name: "ui",
+              test: /@base-ui/,
+            },
+          ],
+        },
+      },
+    },
+  },
   plugins: [
     devtools(),
     cloudflare({ viteEnvironment: { name: "ssr" } }),

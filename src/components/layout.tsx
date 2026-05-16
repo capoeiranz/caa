@@ -2,10 +2,10 @@ import { TanStackDevtools } from "@tanstack/react-devtools"
 import { HeadContent, Scripts } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 import { Antifouc } from "@tohuhono/ui/antifouc"
-import { ModeToggle } from "@tohuhono/ui/mode-toggle"
 import type { PropsWithChildren } from "react"
 
 import { AppProvider } from "./app-provider"
+import { ModeToggle } from "./ui/mode-toggle"
 
 function PageLayout({ children }: PropsWithChildren) {
   return (
@@ -20,7 +20,7 @@ function PageLayout({ children }: PropsWithChildren) {
 
 export function Layout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
         <Antifouc />
