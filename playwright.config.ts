@@ -44,7 +44,7 @@ export default defineConfig({
   webServer: remoteBaseUrl
     ? undefined
     : {
-        command: "pnpm dev",
+        command: "pnpm sst:ci",
         reuseExistingServer: true,
         url: "http://localhost:3000",
         stderr: "pipe",

@@ -10,6 +10,8 @@
     "dev": "vite dev --port 3000",
     "check": "pnpm format:check && pnpm lint && pnpm tsc",
     "build": "vite build",
+    "sst:dev": "sst dev",
+    "sst:ci": "sst dev --mode=mono --print-logs",
     "sst:deploy": "sst deploy --stage \"$SST_STAGE\"",
     "sst:dry-run": "sst diff --stage \"$SST_STAGE\"",
     "sst:remove": "sst remove --stage \"$SST_STAGE\"",

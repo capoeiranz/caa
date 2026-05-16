@@ -28,7 +28,11 @@ const config = defineConfig({
       configPath: process.env.SST_WRANGLER_PATH,
     }),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({
+      prerender: {
+        enabled: true,
+      },
+    }),
     viteReact(),
   ],
 })
