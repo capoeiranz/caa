@@ -33,6 +33,10 @@ export default $config({
     })
 
     $resolve([]).apply(async () => {
+      if (!isProduction) {
+        return
+      }
+
       console.log("🚀 Worker deployed successfully. Triggering Cloudflare cache purge...")
 
       const response = await fetch(
