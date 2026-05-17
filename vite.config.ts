@@ -6,7 +6,6 @@ import viteReact from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
 const SST_WRANGLER_PATH = process.env.SST_WRANGLER_PATH
-const BASE_URL = "https://capoeira.org.nz"
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
