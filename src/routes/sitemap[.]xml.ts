@@ -8,7 +8,8 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: async () => {
         const [{ baseUrl }, pages] = await Promise.all([getSite(), getAllPages()])
 
-        const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+        return new Response(
+          `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${baseUrl}/</loc>
@@ -25,14 +26,15 @@ export const Route = createFileRoute("/sitemap.xml")({
   </url>`,
     )
     .join("")}
-</urlset>`
-
-        return new Response(sitemap, {
-          headers: {
-            "Content-Type": "application/xml",
-            "Cache-Control": "public, max-age=15s, must-revalidate",
+</urlset>
+`,
+          {
+            headers: {
+              "Content-Type": "application/xml",
+              "Cache-Control": "public, max-age=15s, must-revalidate",
+            },
           },
-        })
+        )
       },
     },
   },
