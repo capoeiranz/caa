@@ -6,7 +6,7 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const [{ baseUrl }, pages] = await Promise.all([getSite(), getAllPages()])
+        const [{ baseUrl, cacheControl }, pages] = await Promise.all([getSite(), getAllPages()])
 
         return new Response(
           `<?xml version="1.0" encoding="UTF-8"?>
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           {
             headers: {
               "Content-Type": "application/xml",
-              "Cache-Control": "public, max-age=15s, must-revalidate",
+              "Cache-Control": cacheControl,
             },
           },
         )

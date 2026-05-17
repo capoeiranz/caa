@@ -6,7 +6,7 @@ export const Route = createFileRoute("/robots.txt")({
   server: {
     handlers: {
       GET: async () => {
-        const { baseUrl } = await getSite()
+        const { baseUrl, cacheControl } = await getSite()
 
         return new Response(
           `
@@ -18,7 +18,7 @@ Sitemap: ${baseUrl}/sitemap.xml
           {
             headers: {
               "Content-Type": "text/plain",
-              "Cache-Control": "public, max-age=25s, must-revalidate",
+              "Cache-Control": cacheControl,
             },
           },
         )

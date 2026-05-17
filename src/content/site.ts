@@ -12,5 +12,6 @@ export async function getSite() {
     baseUrl: "https://capoeira.org.nz",
     title: "Capoeira Angola Aotearoa",
     description: "Capoeira Angola Classes with Mestre Brabo in Aotearoa, New Zealand",
+    cacheControl: "public, s-maxage=3600, stale-while-revalidate",
   }
 }

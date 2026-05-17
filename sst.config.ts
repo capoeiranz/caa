@@ -32,6 +32,29 @@ export default $config({
       }),
     })
 
+    $resolve([]).apply(async () => {
+      console.log("🚀 Worker deployed successfully. Triggering Cloudflare cache purge...")
+
+      const response = await fetch(
+        `https://api.cloudflare.com/client/v4/zones/${process.env.CLOUDFLARE_ZONE_ID}/purge_cache`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ purge_everything: true }),
+        },
+      )
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`❌ Cloudflare CDN Purge Rejected (HTTP ${response.status}): ${errorText}`)
+      }
+
+      console.log("✅ Cloudflare CDN cache purged successfully. Deployment fully complete.")
+    })
+
     return {
       url: app.url,
     }
