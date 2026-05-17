@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { Image } from "@unpic/react"
 
+import logo from "#/assets/logo.svg"
 import { Prose } from "#/components/prose"
 
 export const Route = createFileRoute("/")({ component: Home })
@@ -12,7 +13,7 @@ function Home() {
         <h1>Capoeira Angola Aotearoa</h1>
 
         <Image
-          src={"logo.svg"}
+          src={logo}
           width={300}
           height={300}
           alt="Capoeira Angola Aotearoa logo"

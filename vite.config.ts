@@ -6,6 +6,7 @@ import viteReact from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
 const SST_WRANGLER_PATH = process.env.SST_WRANGLER_PATH
+const BASE_URL = "https://capoeira.org.nz"
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
@@ -35,6 +36,11 @@ const config = defineConfig({
     tanstackStart({
       prerender: {
         enabled: true,
+        crawlLinks: true,
+      },
+      sitemap: {
+        enabled: true,
+        host: BASE_URL,
       },
     }),
     viteReact(),
