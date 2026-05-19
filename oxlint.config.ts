@@ -1,8 +1,9 @@
+import eslintPluginBetterTailwindcss from "eslint-plugin-better-tailwindcss"
 import { defineConfig } from "oxlint"
 
 export default defineConfig({
   plugins: ["typescript", "unicorn"],
-  jsPlugins: ["./oxlint.custom.mjs"],
+  jsPlugins: ["./oxlint.custom.mjs", "eslint-plugin-better-tailwindcss"],
   categories: {
     correctness: "off",
   },
@@ -22,6 +23,8 @@ export default defineConfig({
     ".playwright/e2e-runtime/**",
   ],
   rules: {
+    ...eslintPluginBetterTailwindcss.configs.recommended.rules,
+    "better-tailwindcss/enforce-consistent-line-wrapping": ["error", { strictness: "loose" }],
     "constructor-super": "error",
     "for-direction": "error",
     "no-async-promise-executor": "error",
@@ -149,4 +152,9 @@ export default defineConfig({
       },
     },
   ],
+  settings: {
+    "better-tailwindcss": {
+      entryPoint: "src/app.css",
+    },
+  },
 })
