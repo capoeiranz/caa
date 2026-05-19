@@ -17,7 +17,13 @@ function Home() {
       >
         <h1>Capoeira Angola Aotearoa</h1>
 
-        <Image src={logo} width={300} height={300} alt="Capoeira Angola Aotearoa logo" priority />
+        <Image
+          src={logo}
+          width={300}
+          height={300}
+          alt="Capoeira Angola Aotearoa logo"
+          priority={true}
+        />
       </Prose>
     </div>
   )
