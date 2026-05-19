@@ -19,11 +19,7 @@ export const ModeToggle = ({ className }: { className?: string }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={cn(
-          className,
-          buttonVariants({ variant: "outline" }),
-          `align-middle`,
-        )}
+        className={cn(className, buttonVariants({ variant: "outline" }), `align-middle`)}
       >
         <SunIcon
           className="
