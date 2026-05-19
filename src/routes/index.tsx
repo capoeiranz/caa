@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({ component: Home })
 function Home() {
   return (
     <div className="flex w-full justify-center">
-      <Prose className="flex-column justify-items-center p-2 lg:pt-24">
+      <Prose className="flex-column justify-items-center px-2 pt-1 lg:pt-10">
         <h1>Capoeira Angola Aotearoa</h1>
 
         <Image
