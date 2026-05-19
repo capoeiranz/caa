@@ -39,6 +39,10 @@ export default $config({
 
       console.log("🚀 Worker deployed successfully. Triggering Cloudflare cache purge...")
 
+      if (!process.env.CLOUDFLARE_ZONE_ID) {
+        throw new Error("No Zone ID set")
+      }
+
       const response = await fetch(
         `https://api.cloudflare.com/client/v4/zones/${process.env.CLOUDFLARE_ZONE_ID}/purge_cache`,
         {
