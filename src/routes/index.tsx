@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { Image } from "@unpic/react"
 
-import logo from "#/assets/logo.svg"
+import logo from "#/assets/logo.webp"
 import { Prose } from "#/components/prose"
 
 export const Route = createFileRoute("/")({ component: Home })
@@ -17,14 +17,7 @@ function Home() {
       >
         <h1>Capoeira Angola Aotearoa</h1>
 
-        <Image
-          src={logo}
-          width={300}
-          height={300}
-          alt="Capoeira Angola Aotearoa logo"
-          loading="eager"
-          fetchPriority="high"
-        />
+        <Image src={logo} width={300} height={300} alt="Capoeira Angola Aotearoa logo" priority />
       </Prose>
     </div>
   )
