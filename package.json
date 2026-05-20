@@ -29,6 +29,7 @@
     "test:e2e": "playwright test",
     "test:e2e:smoke": "playwright test --project smoke",
     "test:playwright": "playwright test",
+    "test:playwright:image": "playwright test -c playwright.image.config.ts",
     "validate": "pnpm lint && pnpm tsc && pnpm test:e2e",
     "wrangler": "wrangler"
   },

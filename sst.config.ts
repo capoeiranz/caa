@@ -12,10 +12,27 @@ export default $config({
   },
   async run() {
     const isProduction = $app.stage === "production"
+    const clientSiteBaseUrl = isProduction ? "https://capoeira.org.nz" : "http://localhost:3000"
+    const workerSourceBaseUrl = "https://capoeira.org.nz"
+
+    const imageWorker = new sst.cloudflare.Worker("ImageWorker", {
+      handler: "workers/image/index.ts",
+      url: true,
+      environment: {
+        SITE_BASE_URL: workerSourceBaseUrl,
+      },
+      ...(isProduction && {
+        domain: "img.capoeira.org.nz",
+      }),
+    })
 
     const app = new sst.cloudflare.TanStackStart("Web", {
       path: ".",
       buildCommand: "pnpm build",
+      environment: {
+        VITE_SITE_BASE_URL: clientSiteBaseUrl,
+        VITE_IMAGE_BASE_URL: imageWorker.url.apply((url) => url ?? "http://localhost:3000"),
+      },
       transform: {
         server: {
           compatibility: {
@@ -65,6 +82,8 @@ export default $config({
 
     return {
       url: app.url,
+      imageUrl: imageWorker.url,
+      imageSourceBaseUrl: workerSourceBaseUrl,
     }
   },
 })

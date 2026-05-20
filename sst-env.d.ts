@@ -6,6 +6,10 @@
 
 declare module "sst" {
   export interface Resource {
+    "ImageWorker": {
+      "type": "sst.cloudflare.Worker"
+      "url": string
+    }
     "Web": {
       "type": "sst.cloudflare.TanStackStart"
       "url": string
