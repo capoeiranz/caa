@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router"
 
-import logo from "#/assets/logo.webp"
+import logo from "#/assets/logo.png"
 import { Image } from "#/components/image"
 import { Prose } from "#/components/prose"
 

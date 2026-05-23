@@ -5,8 +5,6 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import viteReact from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
-const SST_WRANGLER_PATH = process.env.SST_WRANGLER_PATH
-
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
   build: {
@@ -25,12 +23,10 @@ const config = defineConfig({
   },
   plugins: [
     devtools(),
-    SST_WRANGLER_PATH
-      ? cloudflare({
-          viteEnvironment: { name: "ssr" },
-          configPath: process.env.SST_WRANGLER_PATH,
-        })
-      : undefined,
+    cloudflare({
+      viteEnvironment: { name: "ssr" },
+      configPath: "./wrangler.jsonc",
+    }),
     tailwindcss(),
     tanstackStart({
       prerender: {

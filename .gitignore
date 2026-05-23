@@ -1,3 +1,4 @@
+.sst
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # Dependencies and package manager artifacts
@@ -39,7 +40,6 @@ __unconfig*
 # Deployment tooling
 .vercel
 .wrangler
-.sst
 .dev*
 
 # TypeScript and generated metadata
