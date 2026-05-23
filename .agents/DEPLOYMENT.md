@@ -10,12 +10,13 @@
 - Keep `@tanstack/devtools-vite` first in the Vite plugin array.
 - Keep the Cloudflare plugin ahead of TanStack Start so workerd owns the SSR runtime.
 - Keep `tanstackStart()` before `viteReact()` in the Vite plugin array.
-- Deployments are now managed by SST (`sst.config.ts`) using `sst.cloudflare.TanStackStart`.
-- Preview deploys run from pull requests and deploy to stage `pr-<number>`.
-- Production deploys run from pushes to `main` and deploy to stage `production`.
-- Production custom domains are managed in `sst.config.ts` as code.
-- The deploy workflow reads `.sst/outputs.json` and uses the `url` output for smoke tests.
-- Closed pull requests remove their stage with `.github/workflows/preview-cleanup.yml`.
-- Preview deploys use Cloudflare worker URLs by default (no custom preview domain required).
+- Deployments are managed by Wrangler using `wrangler.jsonc` and `scripts/deploy-worker.sh`.
+- Preview deploys run from pull requests and deploy isolated Workers named `caa-pr-<number>`.
+- Production deploys run from pushes to `main` and attach the hostname from
+  `CLOUDFLARE_PRODUCTION_BASE_URL`.
+- The deploy workflow reads Wrangler deploy output and uses the emitted `url` for smoke tests.
+- Closed pull requests delete their preview Worker with `.github/workflows/preview-cleanup.yml`.
+- Preview deploys use each PR Worker's `workers.dev` URL by default.
+- `VITE_IMAGE_BASE_URL` currently targets `https://img.capoeira.org.nz` in all environments.
 - Protected smoke tests use Cloudflare Access service-token headers via
   `CLOUDFLARE_ACCESS_CLIENT_ID` and `CLOUDFLARE_ACCESS_CLIENT_SECRET` GitHub secrets.

@@ -6,38 +6,7 @@ description:
   development.
 ---
 
-Work one behavior slice at a time through a strict RED -> GREEN -> REFACTOR loop.
-
-Repo testing guidelines [TESTING.md](../../TESTING.md)
-
-Repo execution notes:
-
-- Use `pnpm test` for pure-logic Vitest slices.
-- Use `pnpm test:playwright <specs...>` for targeted browser behaviors.
-- Use `pnpm test:e2e:smoke` or `pnpm validate` when you need broader confidence.
-- React components, hooks, providers, server functions, and realtime room flows are usually best
-  verified through Playwright in this repo.
-- If behavior is already covered and the task is a behavior-preserving refactor, a green-to-green
-  loop is acceptable, but still work one observable behavior slice at a time.
-
-## Workflow
-
-### 1. Planning
-
-Before writing any code:
-
-- [ ] Confirm with user what interface changes are needed
-- [ ] Confirm with user which behaviors to test (prioritize)
-- [ ] Identify opportunities for [deep modules](deep-modules.md) (small interface, deep
-      implementation)
-- [ ] Design interfaces for [testability](interface-design.md)
-- [ ] List the behaviors to test (not implementation steps)
-- [ ] Get user approval on the plan
-
-Ask: "What should the public interface look like? Which behaviors are most important to test?"
-
-**You can't test everything.** Confirm with the user exactly which behaviors matter most. Focus
-testing effort on critical paths and complex logic, not every possible edge case.
+# Test-Driven Development
 
 ## Philosophy
 
@@ -73,6 +42,40 @@ This produces **crap tests**:
 **Correct approach**: Vertical slices via tracer bullets. One test → one implementation → repeat.
 Each test responds to what you learned from the previous cycle. Because you just wrote the code, you
 know exactly what behavior matters and how to verify it.
+
+```
+WRONG (horizontal):
+  RED:   test1, test2, test3, test4, test5
+  GREEN: impl1, impl2, impl3, impl4, impl5
+
+RIGHT (vertical):
+  RED→GREEN: test1→impl1
+  RED→GREEN: test2→impl2
+  RED→GREEN: test3→impl3
+  ...
+```
+
+## Workflow
+
+### 1. Planning
+
+When exploring the codebase, use the project's domain glossary so that test names and interface
+vocabulary match the project's language, and respect ADRs in the area you're touching.
+
+Before writing any code:
+
+- [ ] Confirm with user what interface changes are needed
+- [ ] Confirm with user which behaviors to test (prioritize)
+- [ ] Identify opportunities for [deep modules](deep-modules.md) (small interface, deep
+      implementation)
+- [ ] Design interfaces for [testability](interface-design.md)
+- [ ] List the behaviors to test (not implementation steps)
+- [ ] Get user approval on the plan
+
+Ask: "What should the public interface look like? Which behaviors are most important to test?"
+
+**You can't test everything.** Confirm with the user exactly which behaviors matter most. Focus
+testing effort on critical paths and complex logic, not every possible edge case.
 
 ### 2. Tracer Bullet
 
