@@ -72,14 +72,16 @@ longer drives height or crop behavior.
 - Keep `w` mandatory for any non-passthrough transform.
 - Keep `GET /media/<path>` without `w` as stable passthrough behavior.
 - Reject any unknown, duplicate, empty, or out-of-order query params.
-- The only valid query shapes are no query string or `?w=<positive-int>` and `?w=<positive-int>&fmt=webp`.
+- The only valid query shapes are no query string or `?w=<positive-int>` and
+  `?w=<positive-int>&fmt=webp`.
 - Reject non-canonical source paths, including duplicate slashes, dot-segments, encoded alternate
   path shapes, and circular `/media` targets.
 - Support only `GET` and `HEAD` as explicit route handlers. Do not add extra method behavior now.
 - For `HEAD`, return no body on any success or failure path.
 - Preserve aspect ratio by default. Height is always derived from the source image.
 - Remove the explicit derived-height cap from the public route behavior.
-- Keep no-upscale semantics. Requested width is a maximum target width, not an instruction to enlarge.
+- Keep no-upscale semantics. Requested width is a maximum target width, not an instruction to
+  enlarge.
 - Perform same-dimension format conversion when `fmt=webp` is requested for a non-WebP source.
 - Passthrough whenever no real transform is required, including same-format native-size requests.
 - If the source is already WebP and no downscale is needed, `fmt=webp` should passthrough.
@@ -155,5 +157,5 @@ longer drives height or crop behavior.
 - The wrapper is subordinate to the `/media` contract and must be simplified to match it.
 - The route should remain narrow enough that responsive delivery does not turn into a general image
   editing API.
-- The PNG to WebP alpha bug is a hard dependency of the feature and must be fixed, not worked
-  around preemptively.
+- The PNG to WebP alpha bug is a hard dependency of the feature and must be fixed, not worked around
+  preemptively.
