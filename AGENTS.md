@@ -22,6 +22,16 @@ Before substantial work:
 changing; load additional skills only when the task spans multiple packages or concerns.
 <!-- intent-skills:end -->
 
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked as local markdown files under `.agents/scratch/`. See `.agents/issue-tracker.md`.
+
+### Domain docs
+
+This repo uses a single-context domain-doc layout under `.agents/`. See `.agents/domain.md`.
+
 ## Constraints
 
 - Prefer documenting durable repo guidance in `.agents/`

@@ -51,7 +51,7 @@ pnpm check
 
 ## Deploy to Cloudflare Workers
 
-This project uses SST to deploy TanStack Start to Cloudflare Workers.
+This project uses Wrangler to deploy TanStack Start to Cloudflare Workers.
 
 1. Install dependencies: `pnpm install`
 2. Authenticate with Cloudflare credentials (`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`)
@@ -60,13 +60,13 @@ This project uses SST to deploy TanStack Start to Cloudflare Workers.
 
 GitHub Actions deployment flow:
 
-1. Pull requests to `main` deploy a preview stage named `pr-<number>`
-2. Merges to `main` deploy the production stage `production`
-3. Closing/merging a PR removes its preview stage automatically
+1. Pull requests to `main` deploy an isolated preview Worker named `caa-pr-<number>`
+2. Merges to `main` deploy production and attach the hostname from `CLOUDFLARE_PRODUCTION_BASE_URL`
+3. Closing/merging a PR deletes its preview Worker automatically
 
-Production custom domains are defined directly in `sst.config.ts`.
+The deployed URL used by smoke tests is read from Wrangler deploy output.
 
-The deployed URL used by smoke tests is read from `.sst/outputs.json`.
+Image optimization currently points at `https://img.capoeira.org.nz` for all environments.
 
 ## Shadcn
 
