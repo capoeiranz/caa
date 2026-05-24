@@ -40,6 +40,10 @@ export default defineConfig({
       name: "smoke",
       grep: /@smoke/,
     },
+    {
+      name: "tdd",
+      grep: /@tdd/,
+    },
   ],
   webServer: remoteBaseUrl
     ? undefined

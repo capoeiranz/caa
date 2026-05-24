@@ -6,8 +6,9 @@ on:
       environment:
         required: true
         type: string
-      stage:
-        required: true
+      production_base_url:
+        required: false
+        default: ""
         type: string
     outputs:
       url:
@@ -16,21 +17,18 @@ on:
     secrets:
       CLOUDFLARE_API_TOKEN:
         required: true
-      CLOUDFLARE_ZONE_ID:
-        required: false
 
 jobs:
   deploy:
     name: ${{ inputs.environment }}
     environment:
       name: ${{ inputs.environment }}
-      url: ${{ steps.output.outputs.url }}
+      url: ${{ steps.deploy.outputs.url }}
     env:
-      CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      SST_STAGE: ${{ inputs.stage }}
+      PR_NUMBER: ${{ github.event.pull_request.number || '' }}
     outputs:
-      url: ${{ steps.output.outputs.url }}
+      url: ${{ steps.deploy.outputs.url }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -52,12 +50,10 @@ jobs:
           cache: pnpm
       - name: Install
         run: pnpm i
-      - name: Deploy with SST
+      - name: Deploy Worker
         id: deploy
-        run: pnpm run deploy
-      - name: Resolve deployed URL
-        id: output
         shell: bash
-        run: |
-          url="$(jq -r '.url // empty' .sst/outputs.json)"
-          echo "url=$url" >> "$GITHUB_OUTPUT"
+        run: bash scripts/deploy-worker.sh
+        env:
+          DEPLOY_ENVIRONMENT: ${{ inputs.environment }}
+          PRODUCTION_BASE_URL: ${{ inputs.production_base_url }}
