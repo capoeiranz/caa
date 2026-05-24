@@ -6,8 +6,7 @@ const MEDIA_PATH = "/media"
 const MEDIA_PATH_PREFIX = `${MEDIA_PATH}/`
 const MAX_SOURCE_BYTES = 10 * 1024 * 1024
 const MAX_WIDTH = 2560
-// const LONG_CACHE_CONTROL = "public, max-age=31536000, immutable"
-const LONG_CACHE_CONTROL = "public, max-age=0"
+const LONG_CACHE_CONTROL = "public, max-age=31536000, immutable"
 const DEFAULT_QUALITY = 75
 const TRANSFORM_QUERY_KEYS = new Set(["w", "h", "fit", "q", "fmt"])
 
@@ -259,25 +258,18 @@ async function transformImage(
 }
 
 async function handleMediaRequest(request: Request, method: "GET" | "HEAD") {
-  console.log("cloudflare env", Object.keys(env))
   const requestUrl = new URL(request.url)
   const parsed = parseSourcePath(requestUrl)
   if ("error" in parsed) {
     return parsed.error
   }
 
-  console.log("parsed", { parsed }) // /assets/logo-DPA-DBKx.webp
-
   const transformParsed = parseTransformOptions(requestUrl)
   if ("error" in transformParsed) {
     return transformParsed.error
   }
 
-  console.log("transformParsed", { transformParsed }) // "options": { "format": "webp", "width": 900, "height": 300, "quality": 75, }
-
   const sourceRequestUrl = buildSourceRequestUrl(requestUrl, parsed.sourcePath) // https://caa.capoeira.workers.dev/assets/logo-DPA-DBKx.webp
-
-  console.log("sourceRequestUrl", { sourceRequestUrl })
 
   try {
     const includeBody = method === "GET"
@@ -319,7 +311,7 @@ async function handleMediaRequest(request: Request, method: "GET" | "HEAD") {
 export const Route = createFileRoute("/media/$")({
   server: {
     handlers: {
-      GET: (context) => handleMediaRequest(context.request, "GET"),
+      GET: ({request}) => handleMediaRequest(request, "GET"),
       HEAD: ({ request }) => handleMediaRequest(request, "HEAD"),
     },
   },
