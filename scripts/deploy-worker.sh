@@ -7,7 +7,7 @@ pnpm build
 if [[ "${DEPLOY_ENVIRONMENT:-}" == "Preview" ]]; then
   set -- --name "caa-pr-${PR_NUMBER}"
 elif [[ "${DEPLOY_ENVIRONMENT:-}" == "Production" ]]; then
-  set -- --domain "$PRODUCTION_BASE_URL"
+  set -- --domain "${PRODUCTION_BASE_URL}"
 else
   set --
 fi
