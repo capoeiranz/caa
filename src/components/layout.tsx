@@ -13,7 +13,7 @@ function PageLayout({ children }: PropsWithChildren) {
       <div className="grid w-full p-2">
         <ModeToggle className="justify-self-end" />
       </div>
-      <div className="flex-1">{children}</div>
+      <main className="flex-1">{children}</main>
     </div>
   )
 }
