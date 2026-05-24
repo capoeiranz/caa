@@ -311,7 +311,7 @@ async function handleMediaRequest(request: Request, method: "GET" | "HEAD") {
 export const Route = createFileRoute("/media/$")({
   server: {
     handlers: {
-      GET: ({request}) => handleMediaRequest(request, "GET"),
+      GET: ({ request }) => handleMediaRequest(request, "GET"),
       HEAD: ({ request }) => handleMediaRequest(request, "HEAD"),
     },
   },
