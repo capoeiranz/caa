@@ -26,6 +26,8 @@ jobs:
       url: ${{ steps.deploy.outputs.url }}
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      PRODUCTION_BASE_URL: ${{ inputs.production_base_url }}
+      DEPLOY_ENVIRONMENT: ${{ inputs.environment }}
       PR_NUMBER: ${{ github.event.pull_request.number || '' }}
     outputs:
       url: ${{ steps.deploy.outputs.url }}
@@ -54,6 +56,3 @@ jobs:
         id: deploy
         shell: bash
         run: bash scripts/deploy-worker.sh
-        env:
-          DEPLOY_ENVIRONMENT: ${{ inputs.environment }}
-          PRODUCTION_BASE_URL: ${{ inputs.production_base_url }}

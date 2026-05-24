@@ -12,6 +12,8 @@ else
   set --
 fi
 
+echo "let's see if this works ${PRODUCTION_BASE_URL}"
+
 mkdir -p .tmp
 wrangler_output_file=".tmp/wrangler-output.json"
 : > "$wrangler_output_file"
