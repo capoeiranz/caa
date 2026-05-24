@@ -1,80 +1,72 @@
-import { Image as UnpicImage } from "@unpic/react"
-import type { ComponentProps } from "react"
+import { Image as BaseImage, Source, type ImageProps as UnpicImageProps } from "@unpic/react/base"
 
-type ImageProps = ComponentProps<typeof UnpicImage>
+const SUPPORTED_FORMATS = ["webp", "jpg","png"] as const
+type SupportedFormat = typeof SUPPORTED_FORMATS[number]
+const TRANSFORMER_BASE = "https://unpic.invalid"
 
-type ImageTransform = {
-  width?: number
-  quality?: number
-  format?: "webp" | "png" | "jpeg"
+type MediaOperations = {
+  width?: number | string
+  format?: "webp" | "jpg" | "png" | (string & {})
 }
 
-const UNSUPPORTED_FORMAT_PATTERN = /\.(svg|gif|avif)(?:$|[?#])/i
+type BaseImageProps = UnpicImageProps<MediaOperations, never>
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never
+type ImageProps = DistributiveOmit<BaseImageProps, "transformer">
 
-function buildImageUrl(src: string, transform: ImageTransform = {}) {
-  if (UNSUPPORTED_FORMAT_PATTERN.test(src)) {
-    return src
+function getExtension(filename: string): string {
+  const i = filename.lastIndexOf('.');
+  return i < 0 ? '' : filename.slice(i + 1);
+}
+
+function toSafeWidth(width: MediaOperations["width"]) {
+  const numericWidth = typeof width === "number" ? width : Number(width)
+  if (!Number.isFinite(numericWidth) || numericWidth <= 0) {
+    return
   }
+
+  return Math.round(numericWidth)
+}
+
+const transform = (src: string | URL, operations: {
+  width?: number | string
+  format?: SupportedFormat | (string & {})
+} = {}) => {
+
+  const sourceURL = new URL(src, TRANSFORMER_BASE)
+  if (sourceURL.origin !== TRANSFORMER_BASE) {
+    return String(src)
+  }
+
+  const pathname = sourceURL.pathname
+  
+  const extension = getExtension(pathname)
+  if (!SUPPORTED_FORMATS.includes(extension)) {
+    return String(src)
+  }
+
+  const transformedPath = `/media${pathname}`
 
   const searchParams = new URLSearchParams()
-
-  if (transform.width) {
-    searchParams.set("w", String(transform.width))
-  }
-  if (transform.quality) {
-    searchParams.set("q", String(transform.quality))
-  }
-  if (transform.format) {
-    searchParams.set("fmt", transform.format)
+ 
+  const width = toSafeWidth(operations.width)
+  if (width) {
+    searchParams.set("w", String(width))
   }
 
-  return `/media${src}?${searchParams}`
+  if (operations.format === "webp") {
+    searchParams.set("fmt", "webp")
+  }
+
+  return searchParams.size ? `${transformedPath}?${searchParams}` : transformedPath
 }
 
-function getResponsiveWidths(width: number) {
-  const candidates = [width, Math.round(width * 1.5), width * 2, width * 3]
-
-  return [...new Set(candidates.filter((candidate) => candidate > 0 && candidate <= 2560))]
-}
-
-function buildSrcSet(src: string, transform: Omit<ImageTransform, "width">, widths: number[]) {
-  return widths
-    .map((width) => `${buildImageUrl(src, { ...transform, width })} ${width}w`)
-    .join(", ")
-}
-
-export function Image({ src, ...props }: ImageProps) {
-  if (!src) {
-    return <UnpicImage src={src} {...props} />
-  }
-
-  const source = String(src)
-  const widthValue = typeof props.width === "number" ? props.width : Number(props.width)
-  const hasResponsiveDimensions = Number.isFinite(widthValue) && widthValue > 0
-
-  if (!hasResponsiveDimensions) {
-    return <UnpicImage src={buildImageUrl(source)} {...props} />
-  }
-
-  const widths = getResponsiveWidths(widthValue)
-  const fallbackSrc = buildImageUrl(source, { width: widthValue })
-  const fallbackSrcSet = buildSrcSet(source, {}, widths)
-  const webpSrcSet = buildSrcSet(
-    source,
-    {
-      format: "webp",
-    },
-    widths,
-  )
-
-  if (UNSUPPORTED_FORMAT_PATTERN.test(source)) {
-    return <UnpicImage src={source} {...props} />
-  }
-
-  return (
-    <picture>
-      <source type="image/webp" srcSet={webpSrcSet} sizes={props.sizes ?? "100vw"} />
-      <UnpicImage src={fallbackSrc} srcSet={fallbackSrcSet} {...props} />
-    </picture>
-  )
+export function Image(props: ImageProps) {
+  return <picture>
+  <Source
+    transformer={transform}
+    type="image/webp"
+    {...props}
+  />
+  <BaseImage transformer={transform} {...props} />
+</picture>
 }
