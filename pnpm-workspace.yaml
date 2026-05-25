@@ -1,5 +1,5 @@
 allowBuilds:
-  esbuild: true
+  esbuild: set this to true or false
   msw: true
   sharp: true
   simple-git-hooks: true

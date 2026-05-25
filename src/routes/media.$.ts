@@ -2,6 +2,8 @@ import { PhotonImage, SamplingFilter, resize } from "@cf-wasm/photon/workerd"
 import { createFileRoute } from "@tanstack/react-router"
 import { env } from "cloudflare:workers"
 
+import { safeParsePath } from "#/lib/media"
+
 const MEDIA_PATH = "/media"
 const MEDIA_PATH_PREFIX = `${MEDIA_PATH}/`
 const MAX_SOURCE_BYTES = 10 * 1024 * 1024
@@ -257,7 +259,16 @@ async function transformImage(
   }
 }
 
-async function handleMediaRequest(request: Request, method: "GET" | "HEAD") {
+async function handleMediaRequest(
+  request: Request,
+  method: "GET" | "HEAD",
+  { _splat: targetPath }: { _splat?: string },
+) {
+  const path = safeParsePath(request.url, targetPath)
+  if (!path) {
+    new Response("Path not found", { status: 400 })
+  }
+  console.log("targetPath", request.url, targetPath)
   const requestUrl = new URL(request.url)
   const parsed = parseSourcePath(requestUrl)
   if ("error" in parsed) {
@@ -311,8 +322,8 @@ async function handleMediaRequest(request: Request, method: "GET" | "HEAD") {
 export const Route = createFileRoute("/media/$")({
   server: {
     handlers: {
-      GET: ({ request }) => handleMediaRequest(request, "GET"),
-      HEAD: ({ request }) => handleMediaRequest(request, "HEAD"),
+      GET: ({ request, params }) => handleMediaRequest(request, "GET", params),
+      HEAD: ({ request, params }) => handleMediaRequest(request, "HEAD", params),
     },
   },
 })
